@@ -8,7 +8,7 @@ class DHand:
         minimalmodbus.BAUDRATE=38400
 
         self.s=minimalmodbus.Instrument('/dev/ttyUSB0',1)
-        self.s.debug=False
+        self.s.debug=True
 
     def alarm_reset(self):
         # Alarm reset
@@ -71,18 +71,40 @@ class DHand:
         register=int('9005',16)
         print self.s.read_registers(register,1,functioncode=3)
 
-    def move_absolute_position(self, position,speed):
-        # Move the servomotor to the position (in mm)
+    def move_absolute_position(self,position,speed,acceleration,push):
+        # Move the servomotor to the position except if an obstacle is detected
+        # position in mm, speed in mm/s, acceleration in G, push in percentage (0.2-0.7)
         register=39168 # In this function we should use dec and not hex
-        l=[]
-        l.append(0000)
+                
         if (position<0):
             position=0
         elif (position>13):
             position=13 # Maximum value before touching the palm
-        l.append(position*100)
+        if (speed<0):
+            speed=0
+        elif (speed>100):
+            speed=100 # Maximum value (empirical)
+        if (acceleration<0):
+            acceleration=0
+        elif (acceleration>0.209):
+            acceleration=0.209 # Maximum value (empirical)
+        if (push<0.2):
+            push=0.2
+        elif (push>0.7):
+            push=0.7 # Maximum value said in manual
+            
+        l=[]
         l.append(0000)
-        l.append(0010)
+        l.append(position*100)
+        
+        l.append(0000)
+        l.append(10)
+
         l.append(0000)
         l.append(speed*100)
+        
+        l.append(int(acceleration*100))
+        
+        l.append(int(255*push))
+        
         self.s.write_registers(register,l)
