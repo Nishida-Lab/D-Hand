@@ -3,27 +3,35 @@ import time
 
 b=DHand()
 b.alarm_reset()
+
 b.modbus_on()
 b.servo_on()
-#b.home_return()
-#b.start_off()
-#b.start_on()
 
 time.sleep(0.5)
 
 i=0
-while i<10:
+while i<6:
     if(i%2==0):
-        b.move_pos1()
+        b.move_absolute_position(0,40)
     else:
-        b.move_pos2()
-    b.start_off()
-    b.start_on()
+        b.move_absolute_position(13,40)
 
-    print "Sleep"
-    time.sleep(1)
-    print "End of sleep"
+    time.sleep(0.7)
         
     i=i+1
+
+
+while i<10:
+    if(i%2==0):
+        b.move_absolute_position(0,15)
+    else:
+        b.move_absolute_position(13,15)
+
+    time.sleep(1.2)
+        
+    i=i+1
+    
+time.sleep(1)
+
 
 b.pause()

@@ -66,5 +66,23 @@ class DHand:
         register=int('0D00',16)
         self.s.write_register(register,16,functioncode=6)
         
-        
-        
+    def ready(self):
+        # Read if the servo is ready
+        register=int('9005',16)
+        print self.s.read_registers(register,1,functioncode=3)
+
+    def move_absolute_position(self, position,speed):
+        # Move the servomotor to the position (in mm)
+        register=39168 # In this function we should use dec and not hex
+        l=[]
+        l.append(0000)
+        if (position<0):
+            position=0
+        elif (position>13):
+            position=13 # Maximum value before touching the palm
+        l.append(position*100)
+        l.append(0000)
+        l.append(0010)
+        l.append(0000)
+        l.append(speed*100)
+        self.s.write_registers(register,l)
