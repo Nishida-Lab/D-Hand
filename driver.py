@@ -26,6 +26,12 @@ class DHand:
         register=int('0D00',16)
         self.s.write_register(register,4096,functioncode=6)
 
+    def servo_off(self):
+        # Servo ON
+        register=int('0D00',16)
+        self.s.write_register(register,0,functioncode=6)
+
+        
     def modbus_on(self):
         # Modbus ON
         register=int('0427',16)
@@ -124,3 +130,9 @@ class DHand:
         # Read the position of the servomotor
         register=int('9014',16)
         print self.s.read_registers(register,1,functioncode=3)
+
+    def read_torque(self):
+        # Read the position of the servomotor
+        register=int('900C',16)
+        print self.s.read_registers(register,2,functioncode=3)
+            
