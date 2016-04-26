@@ -6,11 +6,11 @@ import time
 
 class DHand:
 
-    def __init__(self):
+    def __init__(self,name,debug):
         minimalmodbus.BAUDRATE=38400
 
-        self.s=minimalmodbus.Instrument('/dev/ttyUSB0',1)
-        self.s.debug=False
+        self.s=minimalmodbus.Instrument("/dev/"+name,1)
+        self.s.debug=debug
 
     def alarm_reset(self):
         # Alarm reset
@@ -33,10 +33,8 @@ class DHand:
         
     def home_return(self):
         # Home return
-        self.s.debug=True
         register=int('0D00',16)
         self.s.write_register(register,4112,functioncode=6)
-        self.s.debug=False
 
     def move_pos1(self):
         # Move to position 1
@@ -116,3 +114,13 @@ class DHand:
         register=int('9000',16)
         [a,b]= self.s.read_registers(register,2,functioncode=3)
         print b
+
+    def read_alarm(self):
+        # Read the position of the servomotor
+        register=int('0500',16)
+        print self.s.read_registers(register,6,functioncode=3)
+
+    def read_position_completed(self):
+        # Read the position of the servomotor
+        register=int('9014',16)
+        print self.s.read_registers(register,1,functioncode=3)
