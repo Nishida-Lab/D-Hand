@@ -1,3 +1,5 @@
+# Author : Thibault Barbie
+
 import minimalmodbus
 import time
 
@@ -8,7 +10,7 @@ class DHand:
         minimalmodbus.BAUDRATE=38400
 
         self.s=minimalmodbus.Instrument('/dev/ttyUSB0',1)
-        self.s.debug=True
+        self.s.debug=False
 
     def alarm_reset(self):
         # Alarm reset
@@ -95,16 +97,22 @@ class DHand:
             
         l=[]
         l.append(0000)
-        l.append(position*100)
+        l.append(int(position*100))
         
         l.append(0000)
         l.append(10)
 
         l.append(0000)
-        l.append(speed*100)
+        l.append(int(speed*100))
         
         l.append(int(acceleration*100))
         
         l.append(int(255*push))
         
         self.s.write_registers(register,l)
+
+    def read_position(self):
+        # Read the position of the servomotor
+        register=int('9000',16)
+        [a,b]= self.s.read_registers(register,2,functioncode=3)
+        print b
