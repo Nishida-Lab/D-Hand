@@ -1,11 +1,11 @@
 # Author : Thibault Barbie
 
-# This file initialise D-Hand. It removes the alarm and do a home return.
+# This file initialise the servomotor. It removes the alarm and do a home return.
 
 from driver import *
 import time
 
-b=DHand()
+b=Servo("ttyUSB0",False)
 
 b.alarm_reset()
 print "Alarm"
@@ -23,5 +23,5 @@ b.home_return()
 print "Home"
 time.sleep(1.5)
 
-b.pause()
-print "Pause"
+b.servo_off()
+print "Servo Off"

@@ -4,7 +4,7 @@ import minimalmodbus
 import time
 
 
-class DHand:
+class Servo:
 
     def __init__(self,name,debug):
         minimalmodbus.BAUDRATE=38400
@@ -65,7 +65,7 @@ class DHand:
     def move_absolute_position(self,position,speed,acceleration,push):
         # Move the servomotor to the position except if an obstacle is detected
         # position in mm, speed in mm/s, acceleration in G, push in percentage (0.2-0.7)
-        register=39168 # In this function we should use dec and not hex
+        register=int('9900',16)
                 
         if (position<0):
             position=0
@@ -73,8 +73,8 @@ class DHand:
             position=13 # Maximum value before touching the palm
         if (speed<0):
             speed=0
-        elif (speed>100):
-            speed=100 # Maximum value (empirical)
+        elif (speed>20):
+            speed=20 # Maximum value (in the manual)
         if (acceleration<0):
             acceleration=0
         elif (acceleration>0.209):
