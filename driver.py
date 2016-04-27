@@ -23,14 +23,13 @@ class DHand:
         
     def servo_on(self):
         # Servo ON
-        register=int('0D00',16)
-        self.s.write_register(register,4096,functioncode=6)
+        register=int('0403',16)
+        self.s.write_bit(register,1,functioncode=5)
 
     def servo_off(self):
-        # Servo ON
-        register=int('0D00',16)
-        self.s.write_register(register,0,functioncode=6)
-
+        # Servo OFF
+        register=int('0403',16)
+        self.s.write_bit(register,0,functioncode=5)
         
     def modbus_on(self):
         # Modbus ON
