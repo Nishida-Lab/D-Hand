@@ -35,12 +35,13 @@ class DHand:
         # Modbus ON
         register=int('0427',16)
         self.s.write_bit(register,1,functioncode=5)
-        
+
     def home_return(self):
         # Home return
-        register=int('0D00',16)
-        self.s.write_register(register,4112,functioncode=6)
-
+        register=int('040B',16)
+        self.s.write_bit(register,0,functioncode=5)
+        self.s.write_bit(register,1,functioncode=5)
+        
     def move_pos1(self):
         # Move to position 1
         register=int('9800',16)
